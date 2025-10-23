@@ -33,7 +33,7 @@ app.use(cors({
     origin: (origin, callback) => {
         // Allow requests with no origin (mobile apps, etc.)
         if (!origin) return callback(null, true);
-        
+
         if (allowedOrigins.includes(origin)) {
             return callback(null, true);
         } else {
@@ -76,7 +76,7 @@ app.get('/', (req, res) => {
 app.listen(port, async () => {
     console.log(`Server is running on http://localhost:${port}`);
     console.log(`API Documentation available at http://localhost:${port}/api-docs`);
-    
+
     // Test database connection
     console.log('Testing database connection...');
     const dbConnected = await testConnection();

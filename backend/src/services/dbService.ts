@@ -5,9 +5,12 @@ const { Pool } = pkg;
 const dbConfig = {
     connectionString: process.env.DATABASE_URL,
     ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
-    max: 20,
+    max: 10, // Reduced for session pooler
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 10000,
+    // Session pooler specific settings
+    statement_timeout: 300000, // 5 minutes
+    query_timeout: 300000, // 5 minutes
 };
 
 console.log('Database config:', {
