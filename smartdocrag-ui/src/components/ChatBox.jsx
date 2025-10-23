@@ -13,9 +13,9 @@ export default function ChatBox({ selectedFile, messages = [], setMessages }) {
 
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ 
+      messagesEndRef.current.scrollIntoView({
         behavior: "smooth",
-        block: "nearest"
+        block: "nearest",
       });
     }
   };
@@ -235,7 +235,7 @@ export default function ChatBox({ selectedFile, messages = [], setMessages }) {
                 </div>
               </div>
             )}
-            
+
             {/* Invisible element to scroll to */}
             <div ref={messagesEndRef} />
           </div>

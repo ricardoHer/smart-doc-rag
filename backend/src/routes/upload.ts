@@ -50,7 +50,7 @@ const upload = multer({ dest: 'uploads/' });
 router.post("/", upload.single('file'), (req, res) => {
     try {
         if (!req.file) return res.status(400).send('No file uploaded.');
-        
+
         // Try reading with UTF-8 first, fallback to latin1 if needed
         let text: string;
         try {
@@ -79,10 +79,10 @@ router.post("/", upload.single('file'), (req, res) => {
                 return char;
             });
         }
-        
+
         // Clean up uploaded file
         fs.unlinkSync(req.file.path);
-        
+
         res.json({ fileName: req.file.originalname, content: text });
     } catch (error) {
         console.error("Error in /upload route:", error);
