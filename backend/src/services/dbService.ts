@@ -1,14 +1,41 @@
 import pkg from 'pg';
 const { Pool } = pkg;
 
-export const pool = new Pool({
+// Database configuration with fallbacks
+const dbConfig = {
     connectionString: process.env.DATABASE_URL,
+    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+    max: 20,
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 10000,
+};
+
+console.log('Database config:', {
+    connectionString: process.env.DATABASE_URL ? '***REDACTED***' : 'NOT SET',
+    ssl: dbConfig.ssl,
+    nodeEnv: process.env.NODE_ENV
 });
+
+export const pool = new Pool(dbConfig);
 
 pool.on('error', (err: any) => {
     console.error('Unexpected error on idle client', err);
     process.exit(-1);
 });
+
+// Test database connection
+export async function testConnection() {
+    try {
+        const client = await pool.connect();
+        const result = await client.query('SELECT NOW()');
+        console.log('Database connected successfully at:', result.rows[0].now);
+        client.release();
+        return true;
+    } catch (error) {
+        console.error('Database connection failed:', error);
+        return false;
+    }
+}
 
 // Document management functions
 export async function listDocuments() {

@@ -6,6 +6,7 @@ import ingestrouter from './routes/ingest.js';
 import queryRouter from './routes/query.js';
 import documentsRouter from './routes/documents.js';
 import { setupSwagger } from './config/swagger.js';
+import { testConnection } from './services/dbService.js';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -72,7 +73,14 @@ app.get('/', (req, res) => {
 });
 
 // Start the server
-app.listen(port, () => {
+app.listen(port, async () => {
     console.log(`Server is running on http://localhost:${port}`);
     console.log(`API Documentation available at http://localhost:${port}/api-docs`);
+    
+    // Test database connection
+    console.log('Testing database connection...');
+    const dbConnected = await testConnection();
+    if (!dbConnected) {
+        console.error('Failed to connect to database. Please check DATABASE_URL environment variable.');
+    }
 });
