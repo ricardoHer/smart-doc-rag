@@ -17,16 +17,29 @@ const port = process.env.PORT || 3000;
 const allowedOrigins = [
     'http://localhost:5173',
     'http://localhost:3000',
-    process.env.FRONTEND_URL || 'http://localhost:5173'
-];
+    'https://smart-doc-rag.vercel.app',
+    process.env.FRONTEND_URL
+].filter(Boolean); // Remove any undefined values
 
 // Add production URL if in production
 if (process.env.NODE_ENV === 'production' && process.env.RENDER_EXTERNAL_URL) {
     allowedOrigins.push(process.env.RENDER_EXTERNAL_URL);
 }
 
+console.log('CORS allowed origins:', allowedOrigins);
+
 app.use(cors({
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+        // Allow requests with no origin (mobile apps, etc.)
+        if (!origin) return callback(null, true);
+        
+        if (allowedOrigins.includes(origin)) {
+            return callback(null, true);
+        } else {
+            console.log('CORS blocked origin:', origin);
+            return callback(new Error('Not allowed by CORS'));
+        }
+    },
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
