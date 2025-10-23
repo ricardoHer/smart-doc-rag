@@ -4,7 +4,7 @@
 
 SmartDocRAG is a comprehensive RAG (Retrieval-Augmented Generation) system that enables intelligent document upload, processing, and querying using OpenAI embeddings and PostgreSQL vector search.
 
-![SmartDocRAG Interface](https://via.placeholder.com/800x400/1f2937/ffffff?text=SmartDocRAG+Interface)
+![SmartDocRAG Interface](image.png)
 
 ## 🌟 Features
 
