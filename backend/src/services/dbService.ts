@@ -14,6 +14,8 @@ const dbConfig = {
     // Additional settings for better connectivity
     keepAlive: true,
     keepAliveInitialDelayMillis: 10000,
+    // Ensure UTF-8 encoding
+    charset: 'utf8',
 };
 
 console.log('Database config:', {

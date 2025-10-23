@@ -50,7 +50,39 @@ const upload = multer({ dest: 'uploads/' });
 router.post("/", upload.single('file'), (req, res) => {
     try {
         if (!req.file) return res.status(400).send('No file uploaded.');
-        const text = fs.readFileSync(req.file.path, 'utf-8');
+        
+        // Try reading with UTF-8 first, fallback to latin1 if needed
+        let text: string;
+        try {
+            text = fs.readFileSync(req.file.path, 'utf-8');
+            // Validate if the text contains any invalid UTF-8 characters
+            if (text.includes('�')) {
+                throw new Error('Invalid UTF-8 encoding detected');
+            }
+        } catch (error) {
+            console.log('UTF-8 failed, trying latin1 encoding...');
+            // Fallback to latin1 and convert to UTF-8
+            const buffer = fs.readFileSync(req.file.path);
+            text = buffer.toString('latin1');
+            // Convert special characters if needed
+            text = text.replace(/[^\x00-\x7F]/g, (char) => {
+                const code = char.charCodeAt(0);
+                if (code === 0xE1) return 'á';
+                if (code === 0xE9) return 'é';
+                if (code === 0xED) return 'í';
+                if (code === 0xF3) return 'ó';
+                if (code === 0xFA) return 'ú';
+                if (code === 0xE0) return 'à';
+                if (code === 0xE2) return 'â';
+                if (code === 0xE3) return 'ã';
+                if (code === 0xE7) return 'ç';
+                return char;
+            });
+        }
+        
+        // Clean up uploaded file
+        fs.unlinkSync(req.file.path);
+        
         res.json({ fileName: req.file.originalname, content: text });
     } catch (error) {
         console.error("Error in /upload route:", error);
