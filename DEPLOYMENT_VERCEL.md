@@ -23,11 +23,19 @@
    vercel --prod
    ```
 
-## Environment Variables
+## Environment Variables Setup (IMPORTANT)
 
-In Vercel dashboard, set the following environment variable:
+**After deployment, you MUST configure the environment variable in Vercel dashboard:**
 
-- `VITE_API_URL`: Your backend URL (e.g., `https://your-app.onrender.com`)
+1. Go to your project in Vercel dashboard
+2. Navigate to **Settings** → **Environment Variables**
+3. Add the following variable:
+
+   - **Name:** `VITE_API_URL`
+   - **Value:** Your backend URL (e.g., `https://your-app.onrender.com`)
+   - **Environment:** Production (and Preview if needed)
+
+4. **Redeploy** after adding the environment variable
 
 ## Manual Deployment Steps
 
@@ -35,7 +43,16 @@ In Vercel dashboard, set the following environment variable:
 2. **Set framework preset:** Vite
 3. **Set build command:** `npm run build`
 4. **Set output directory:** `dist`
-5. **Add environment variables in dashboard**
+5. **⚠️ IMPORTANT: Add environment variables in dashboard (see above)**
+6. **Redeploy to apply environment variables**
+
+## Environment Variable Configuration
+
+The app uses `VITE_API_URL` to connect to your backend:
+
+- **Development:** Defaults to `http://localhost:3000`
+- **Production:** Uses `VITE_API_URL` from Vercel environment variables
+- **Fallback:** If not set, defaults to localhost (will cause CORS errors in production)
 
 ## Local Development
 
@@ -51,7 +68,7 @@ npm run preview:production
 
 ```
 smartdocrag-ui/
-├── vercel.json          # Vercel configuration
+├── vercel.json          # Vercel configuration (simplified)
 ├── vite.config.js       # Vite configuration
 ├── .env.local           # Local environment variables
 ├── .env.production      # Production environment template
@@ -60,15 +77,30 @@ smartdocrag-ui/
 
 ## Verification
 
-After deployment:
+After deployment and environment variable setup:
 
 1. Check if frontend loads correctly
-2. Verify API calls to backend work
+2. Verify API calls to backend work (check Network tab)
 3. Test document upload and chat functionality
 4. Check browser console for any errors
 
 ## Troubleshooting
 
-- **CORS errors:** Ensure backend CORS is configured for your Vercel domain
-- **API not found:** Check VITE_API_URL environment variable
-- **Build failures:** Check Node.js version compatibility (18+)
+- **"Environment Variable references Secret which does not exist":**
+
+  - Use Vercel dashboard to set environment variables, not vercel.json
+  - Redeploy after adding variables
+
+- **CORS errors:**
+
+  - Ensure backend CORS is configured for your Vercel domain
+  - Check that VITE_API_URL is correctly set
+
+- **API not found (404 errors):**
+
+  - Verify VITE_API_URL environment variable in Vercel dashboard
+  - Check backend URL is accessible
+
+- **Build failures:**
+  - Check Node.js version compatibility (18+)
+  - Ensure all dependencies are installed

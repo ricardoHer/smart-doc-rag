@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
 import MainArea from "./components/MainArea";
+import ApiDebug from "./components/ApiDebug";
 
 function App() {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -55,6 +56,11 @@ function App() {
           onViewChange={handleViewChange}
           hasFiles={true} // We'll check this differently now
         />
+
+        {/* API Debug Component - Remove after verification */}
+        <div className="p-4">
+          <ApiDebug />
+        </div>
 
         <MainArea
           currentView={currentView}
