@@ -14,8 +14,19 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Configure CORS
+const allowedOrigins = [
+    'http://localhost:5173',
+    'http://localhost:3000',
+    process.env.FRONTEND_URL || 'http://localhost:5173'
+];
+
+// Add production URL if in production
+if (process.env.NODE_ENV === 'production' && process.env.RENDER_EXTERNAL_URL) {
+    allowedOrigins.push(process.env.RENDER_EXTERNAL_URL);
+}
+
 app.use(cors({
-    origin: ['http://localhost:5173', 'http://localhost:3000'], // Allow frontend and any other local development
+    origin: allowedOrigins,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
