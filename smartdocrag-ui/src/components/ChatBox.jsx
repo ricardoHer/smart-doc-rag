@@ -1,9 +1,24 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { askQuestion } from "../services/api";
 
 export default function ChatBox({ selectedFile, messages = [], setMessages }) {
   const [question, setQuestion] = useState("");
   const [loading, setLoading] = useState(false);
+  const messagesEndRef = useRef(null);
+
+  // Auto-scroll to bottom when messages change
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, loading]);
+
+  const scrollToBottom = () => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ 
+        behavior: "smooth",
+        block: "nearest"
+      });
+    }
+  };
 
   const addMessage = (message) => {
     setMessages((prev) => [...prev, message]);
@@ -220,6 +235,9 @@ export default function ChatBox({ selectedFile, messages = [], setMessages }) {
                 </div>
               </div>
             )}
+            
+            {/* Invisible element to scroll to */}
+            <div ref={messagesEndRef} />
           </div>
         )}
       </div>
