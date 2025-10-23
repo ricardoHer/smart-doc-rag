@@ -7,10 +7,13 @@ const dbConfig = {
     ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
     max: 10, // Reduced for session pooler
     idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 10000,
+    connectionTimeoutMillis: 15000, // Increased timeout for Render
     // Session pooler specific settings
     statement_timeout: 300000, // 5 minutes
     query_timeout: 300000, // 5 minutes
+    // Additional settings for better connectivity
+    keepAlive: true,
+    keepAliveInitialDelayMillis: 10000,
 };
 
 console.log('Database config:', {
@@ -26,18 +29,27 @@ pool.on('error', (err: any) => {
     process.exit(-1);
 });
 
-// Test database connection
-export async function testConnection() {
-    try {
-        const client = await pool.connect();
-        const result = await client.query('SELECT NOW()');
-        console.log('Database connected successfully at:', result.rows[0].now);
-        client.release();
-        return true;
-    } catch (error) {
-        console.error('Database connection failed:', error);
-        return false;
+// Test database connection with retry
+export async function testConnection(retries = 3) {
+    for (let i = 0; i < retries; i++) {
+        try {
+            const client = await pool.connect();
+            const result = await client.query('SELECT NOW()');
+            console.log(`Database connected successfully at: ${result.rows[0].now}`);
+            client.release();
+            return true;
+        } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+            console.error(`Database connection attempt ${i + 1} failed:`, errorMessage);
+            if (i === retries - 1) {
+                console.error('All database connection attempts failed');
+                return false;
+            }
+            // Wait before retry
+            await new Promise(resolve => setTimeout(resolve, 2000));
+        }
     }
+    return false;
 }
 
 // Document management functions
