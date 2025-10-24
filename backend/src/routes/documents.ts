@@ -7,12 +7,12 @@ const router = express.Router();
  * @swagger
  * /documents:
  *   get:
- *     summary: Listar todos os documentos
- *     description: Retorna uma lista de todos os documentos armazenados no banco de dados com informações sobre chunks
+ *     summary: List all documents
+ *     description: Returns a list of all documents stored in the database with chunk information
  *     tags: [Documents]
  *     responses:
  *       200:
- *         description: Lista de documentos retornada com sucesso
+ *         description: Document list returned successfully
  *         content:
  *           application/json:
  *             schema:
@@ -25,15 +25,15 @@ const router = express.Router();
  *             example:
  *               documents:
  *                 - id: 1
- *                   name: "Manual do Produto.txt"
+ *                   name: "Product Manual.txt"
  *                   created_at: "2023-10-22T18:30:00.000Z"
  *                   chunks_count: "15"
  *                 - id: 2
- *                   name: "Documentação da API.txt"
+ *                   name: "API Documentation.txt"
  *                   created_at: "2023-10-22T17:45:00.000Z"
  *                   chunks_count: "8"
  *       500:
- *         description: Erro interno do servidor
+ *         description: Internal server error
  *         content:
  *           application/json:
  *             schema:
@@ -53,8 +53,8 @@ router.get("/", async (req, res) => {
  * @swagger
  * /documents/{id}:
  *   get:
- *     summary: Obter documento por ID
- *     description: Retorna informações detalhadas de um documento específico
+ *     summary: Get document by ID
+ *     description: Returns detailed information of a specific document
  *     tags: [Documents]
  *     parameters:
  *       - in: path
@@ -62,22 +62,22 @@ router.get("/", async (req, res) => {
  *         required: true
  *         schema:
  *           type: integer
- *         description: ID do documento
+ *         description: Document ID
  *     responses:
  *       200:
- *         description: Documento encontrado
+ *         description: Document found
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/DocumentSummary'
  *       404:
- *         description: Documento não encontrado
+ *         description: Document not found
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Error'
  *       500:
- *         description: Erro interno do servidor
+ *         description: Internal server error
  *         content:
  *           application/json:
  *             schema:
@@ -108,8 +108,8 @@ router.get("/:id", async (req, res) => {
  * @swagger
  * /documents/{id}/chunks:
  *   get:
- *     summary: Listar chunks de um documento
- *     description: Retorna todos os chunks de texto de um documento específico
+ *     summary: List document chunks
+ *     description: Returns all text chunks of a specific document
  *     tags: [Documents]
  *     parameters:
  *       - in: path
@@ -117,10 +117,10 @@ router.get("/:id", async (req, res) => {
  *         required: true
  *         schema:
  *           type: integer
- *         description: ID do documento
+ *         description: Document ID
  *     responses:
  *       200:
- *         description: Chunks do documento retornados com sucesso
+ *         description: Document chunks returned successfully
  *         content:
  *           application/json:
  *             schema:
@@ -139,13 +139,13 @@ router.get("/:id", async (req, res) => {
  *                         type: string
  *                         format: date-time
  *       404:
- *         description: Documento não encontrado
+ *         description: Document not found
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Error'
  *       500:
- *         description: Erro interno do servidor
+ *         description: Internal server error
  *         content:
  *           application/json:
  *             schema:
@@ -177,19 +177,21 @@ router.get("/:id/chunks", async (req, res) => {
  * @swagger
  * /documents/{id}:
  *   delete:
- *     summary: Remover documento
- *     description: Remove um documento e todos os seus embeddings do banco de dados
+ *     summary: Delete a document
+ *     description: Removes a document and all its associated chunks from the database
  *     tags: [Documents]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
+ *         description: Numeric ID of the document to be deleted
  *         schema:
  *           type: integer
- *         description: ID do documento a ser removido
+ *           minimum: 1
+ *         example: 1
  *     responses:
  *       200:
- *         description: Documento removido com sucesso
+ *         description: Document deleted successfully
  *         content:
  *           application/json:
  *             schema:
@@ -197,11 +199,18 @@ router.get("/:id/chunks", async (req, res) => {
  *               properties:
  *                 message:
  *                   type: string
- *                   example: "Document deleted successfully"
- *                 deletedDocument:
- *                   $ref: '#/components/schemas/DocumentSummary'
+ *             example:
+ *               message: "Document deleted successfully"
+ *       400:
+ *         description: Invalid document ID
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *             example:
+ *               error: "Document ID must be a valid number"
  *       404:
- *         description: Documento não encontrado
+ *         description: Document not found
  *         content:
  *           application/json:
  *             schema:
@@ -209,7 +218,7 @@ router.get("/:id/chunks", async (req, res) => {
  *             example:
  *               error: "Document not found"
  *       500:
- *         description: Erro interno do servidor
+ *         description: Internal server error
  *         content:
  *           application/json:
  *             schema:

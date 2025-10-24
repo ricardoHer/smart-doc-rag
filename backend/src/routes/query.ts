@@ -19,8 +19,8 @@ function getOpenAIClient(): OpenAI {
  * @swagger
  * /query:
  *   post:
- *     summary: Consulta RAG
- *     description: Realiza uma consulta usando RAG (Retrieval-Augmented Generation) para obter respostas baseadas nos documentos processados
+ *     summary: RAG Query
+ *     description: Performs a query using RAG (Retrieval-Augmented Generation) to get answers based on processed documents
  *     tags: [Query]
  *     requestBody:
  *       required: true
@@ -29,22 +29,22 @@ function getOpenAIClient(): OpenAI {
  *           schema:
  *             $ref: '#/components/schemas/QueryRequest'
  *           example:
- *             question: "Como funciona o sistema de pagamento?"
+ *             question: "How does the payment system work?"
  *     responses:
  *       200:
- *         description: Consulta realizada com sucesso
+ *         description: Query executed successfully
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/QueryResponse'
  *             example:
- *               answer: "O sistema de pagamento funciona através de múltiplas opções incluindo cartão de crédito, débito e PIX..."
+ *               answer: "The payment system works through multiple options including credit card, debit and PIX..."
  *               contextUsed: [
- *                 "O pagamento pode ser realizado através de cartão de crédito, débito ou PIX. Para utilizar o",
- *                 "sistema de pagamento, acesse a seção de cobrança no menu principal. Todas as transações são"
+ *                 "Payment can be made through credit card, debit or PIX. To use the",
+ *                 "payment system, access the billing section in the main menu. All transactions are"
  *               ]
  *       400:
- *         description: Pergunta não fornecida
+ *         description: Question not provided
  *         content:
  *           application/json:
  *             schema:
@@ -52,7 +52,7 @@ function getOpenAIClient(): OpenAI {
  *             example:
  *               error: "Missing 'question' in request body"
  *       500:
- *         description: Erro interno do servidor
+ *         description: Internal server error
  *         content:
  *           application/json:
  *             schema:

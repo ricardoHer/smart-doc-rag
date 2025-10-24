@@ -9,8 +9,8 @@ const router = express.Router();
  * @swagger
  * /ingest:
  *   post:
- *     summary: Ingestão de documento
- *     description: Processa um documento dividindo em chunks, gera embeddings e armazena no banco de dados
+ *     summary: Document ingestion
+ *     description: Processes a document by splitting into chunks, generating embeddings and storing in database
  *     tags: [Document Processing]
  *     requestBody:
  *       required: true
@@ -19,11 +19,11 @@ const router = express.Router();
  *           schema:
  *             $ref: '#/components/schemas/IngestRequest'
  *           example:
- *             name: "Manual do Produto"
- *             content: "Este é o conteúdo do documento que será processado. Ele será dividido em chunks menores para processamento de embeddings. Cada chunk terá no máximo 500 caracteres e será usado para busca semântica."
+ *             name: "Product Manual"
+ *             content: "This is the document content that will be processed. It will be divided into smaller chunks for embedding processing. Each chunk will have a maximum of 500 characters and will be used for semantic search."
  *     responses:
  *       200:
- *         description: Documento processado com sucesso
+ *         description: Document processed successfully
  *         content:
  *           application/json:
  *             schema:
@@ -33,7 +33,7 @@ const router = express.Router();
  *               documentId: 123
  *               chunks: 5
  *       400:
- *         description: Parâmetros obrigatórios ausentes
+ *         description: Required parameters missing
  *         content:
  *           application/json:
  *             schema:
@@ -41,7 +41,7 @@ const router = express.Router();
  *             example:
  *               error: "Missing 'name' or 'content' in request body"
  *       500:
- *         description: Erro interno do servidor
+ *         description: Internal server error
  *         content:
  *           application/json:
  *             schema:

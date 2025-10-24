@@ -9,8 +9,8 @@ const upload = multer({ dest: 'uploads/' });
  * @swagger
  * /upload:
  *   post:
- *     summary: Upload de arquivo
- *     description: Faz upload de um arquivo de texto e retorna o conteúdo extraído
+ *     summary: File upload
+ *     description: Uploads a text file and returns the extracted content
  *     tags: [Upload]
  *     requestBody:
  *       required: true
@@ -22,26 +22,26 @@ const upload = multer({ dest: 'uploads/' });
  *               file:
  *                 type: string
  *                 format: binary
- *                 description: Arquivo de texto para upload
+ *                 description: Text file for upload
  *     responses:
  *       200:
- *         description: Upload realizado com sucesso
+ *         description: Upload completed successfully
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/UploadResponse'
  *             example:
- *               fileName: "documento.txt"
- *               content: "Conteúdo do arquivo de texto..."
+ *               fileName: "document.txt"
+ *               content: "Text file content..."
  *       400:
- *         description: Nenhum arquivo foi enviado
+ *         description: No file was sent
  *         content:
  *           text/plain:
  *             schema:
  *               type: string
  *               example: "No file uploaded."
  *       500:
- *         description: Erro interno do servidor
+ *         description: Internal server error
  *         content:
  *           application/json:
  *             schema:

@@ -1,8 +1,8 @@
-# SmartDocRAG: Explicação Detalhada dos Processos RAG
+# SmartDocRAG: Detailed Explanation of RAG Processes
 
-## 📖 Introdução
+## 📖 Introduction
 
-O SmartDocRAG é um sistema **RAG (Retrieval-Augmented Generation)** que combina busca semântica com geração de linguagem natural para responder perguntas baseadas em documentos. Este documento explica em detalhes como cada processo funciona.
+SmartDocRAG is a **RAG (Retrieval-Augmented Generation)** system that combines semantic search with natural language generation to answer questions based on documents. This document explains in detail how each process works.
 
 ---
 

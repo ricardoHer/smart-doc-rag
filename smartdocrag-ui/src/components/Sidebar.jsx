@@ -10,7 +10,7 @@ const Sidebar = forwardRef(function Sidebar(
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Carregar documentos ao montar o componente
+  // Load documents when component mounts
   useEffect(() => {
     loadDocuments();
   }, []);

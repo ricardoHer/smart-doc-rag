@@ -8,7 +8,7 @@ const options = {
         info: {
             title: 'SmartDocRAG API',
             version: '1.0.0',
-            description: 'API para sistema RAG (Retrieval-Augmented Generation) que permite upload, processamento e consulta inteligente de documentos',
+            description: 'API for RAG (Retrieval-Augmented Generation) system that allows upload, processing and intelligent querying of documents',
             contact: {
                 name: 'SmartDocRAG Team',
                 email: 'support@smartdocrag.com'
@@ -23,19 +23,19 @@ const options = {
         tags: [
             {
                 name: 'Upload',
-                description: 'Operações de upload de arquivos'
+                description: 'File upload operations'
             },
             {
                 name: 'Document Processing',
-                description: 'Processamento e ingestão de documentos'
+                description: 'Document processing and ingestion'
             },
             {
                 name: 'Documents',
-                description: 'Gerenciamento de documentos armazenados'
+                description: 'Stored document management'
             },
             {
                 name: 'Query',
-                description: 'Consultas RAG (Retrieval-Augmented Generation)'
+                description: 'RAG (Retrieval-Augmented Generation) queries'
             }
         ],
         components: {
@@ -156,8 +156,8 @@ const options = {
                     properties: {
                         question: {
                             type: 'string',
-                            description: 'Pergunta a ser respondida baseada nos documentos',
-                            example: 'Como funciona o sistema de pagamento?'
+                            description: 'Question to be answered based on documents',
+                            example: 'How does the payment system work?'
                         }
                     }
                 },
@@ -166,14 +166,14 @@ const options = {
                     properties: {
                         answer: {
                             type: 'string',
-                            description: 'Resposta gerada pela IA baseada no contexto'
+                            description: 'AI-generated answer based on context'
                         },
                         contextUsed: {
                             type: 'array',
                             items: {
                                 type: 'string'
                             },
-                            description: 'Primeiros 100 caracteres de cada chunk utilizado como contexto'
+                            description: 'First 100 characters of each chunk used as context'
                         }
                     }
                 },
@@ -182,7 +182,7 @@ const options = {
                     properties: {
                         error: {
                             type: 'string',
-                            description: 'Mensagem de erro'
+                            description: 'Error message'
                         }
                     }
                 }

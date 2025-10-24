@@ -1,68 +1,68 @@
-# Configuração do Supabase Session Pooler
+# Supabase Session Pooler Configuration
 
-## Problema
+## Problem
 
-O Supabase free tier não é compatível com IPv4 por padrão, causando erro:
+Supabase free tier is not compatible with IPv4 by default, causing error:
 
 ```
 connect ENETUNREACH 2600:1f16:... - Local (:::0)
 ```
 
-## Solução: Session Pooler
+## Solution: Session Pooler
 
-### 1. Obter URL do Session Pooler
+### 1. Get Session Pooler URL
 
-No dashboard do Supabase:
+In Supabase dashboard:
 
-1. Projeto → Settings → Database
+1. Project → Settings → Database
 2. Connection Parameters
-3. Copie a URL do **Session pooler** (não a Direct connection)
+3. Copy the **Session pooler** URL (not Direct connection)
 
-### 2. Identificar a Diferença
+### 2. Identify the Difference
 
 ```bash
-# ❌ Direct connection (problemática)
+# ❌ Direct connection (problematic)
 postgresql://postgres:[PASSWORD]@db.[PROJECT_ID].supabase.co:5432/postgres
 
-# ✅ Session pooler (funciona no Render)
+# ✅ Session pooler (works on Render)
 postgresql://postgres:[PASSWORD]@db.[PROJECT_ID].supabase.co:6543/postgres
 ```
 
-**Diferença principal: porta 6543 em vez de 5432**
+**Main difference: port 6543 instead of 5432**
 
-### 3. Configurar no Render
+### 3. Configure on Render
 
-1. Dashboard do Render → Seu backend service
+1. Render Dashboard → Your backend service
 2. Settings → Environment Variables
-3. Editar `DATABASE_URL`
-4. **Trocar `:5432` por `:6543`**
-5. Save Changes (vai fazer redeploy automático)
+3. Edit `DATABASE_URL`
+4. **Change `:5432` to `:6543`**
+5. Save Changes (will auto-redeploy)
 
-### 4. Verificar Conexão
+### 4. Verify Connection
 
-Após redeploy, verificar logs do Render para:
+After redeploy, check Render logs for:
 
 ```
 Database connected successfully at: [timestamp]
 ```
 
-### 5. Benefícios do Session Pooler
+### 5. Session Pooler Benefits
 
-- ✅ Compatibilidade IPv4
-- ✅ Melhor performance com conexões pooled
-- ✅ Reduz timeout de conexões
-- ✅ Mantém o Supabase free tier
+- ✅ IPv4 compatibility
+- ✅ Better performance with pooled connections
+- ✅ Reduces connection timeouts
+- ✅ Keeps Supabase free tier
 
-### 6. Limitações
+### 6. Limitations
 
-- Máximo 15 conexões simultâneas no free tier
-- Timeout de 300 segundos por query
-- Algumas extensões podem não funcionar
+- Maximum 15 simultaneous connections on free tier
+- 300 second timeout per query
+- Some extensions may not work
 
 ## Troubleshooting
 
-Se ainda houver problemas:
+If there are still problems:
 
-1. Verificar se a URL está correta
-2. Verificar se a extensão pgvector está habilitada
-3. Testar conexão local com a nova URL
+1. Verify the URL is correct
+2. Check if pgvector extension is enabled
+3. Test local connection with new URL
